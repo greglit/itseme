@@ -3,8 +3,8 @@
     <b-container fluid>
       <b-row>
         <b-col>
-          <h1 class="text-left inktrap display-1 mt-5">Hi, I'm Gregor!</h1>
-          <h1 class="text-left inktrap display-5">
+          <h1 class="text-left inktrap display-1 mt-5 ml-3">Hi, I'm Gregor!</h1>
+          <h1 class="text-left inktrap display-5 ml-3">
             Before I tell you something about me, I'd like to encourage you to make your own mark on my site.
           </h1>
           <h1><b-icon-chevron-double-right/></h1>
