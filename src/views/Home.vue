@@ -5,12 +5,14 @@
         <b-col>
           <h1 class="text-left inktrap display-1 mt-5 ml-3">Hi, I'm Gregor!</h1>
           <h1 class="text-left inktrap display-5 ml-3">
-            Before I tell you something about me, I'd like to encourage you to make your own mark on my site.
+            Before I tell you something about me, I'd like to encourage you to leave your own mark on my site.
           </h1>
           <h1>
-            <b-icon-chevron-double-right/>
+            <!--<b-icon-chevron-double-right/>-->
             <b-icon-chevron-double-down/>
           </h1>
+          <br>
+          <h5>Just tap on one of the dots...</h5>
         </b-col>
         <b-col>
           <div :key="JSON.stringify(dotmatrix)" class="mx-auto" style="width: 360px; height:640px; margin-top: 120px; display:flex; flex-direction:column;justify-content:space-around;">
