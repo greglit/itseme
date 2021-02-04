@@ -23,6 +23,8 @@
 }
 
 .inktrap {
-  font-family: WhyteInktrapBold, Helvetica, Arial, sans-serif;
+  //font-family: WhyteInktrapBold, Helvetica, Arial, sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 500;
 }
 </style>
