@@ -18,13 +18,11 @@
 }
 
 @font-face {
-  font-family: "WhyteInktrapBold";
-  src: local("WhyteInktrapBold"),   url(./assets/fonts/WhyteInktrap-Bold.ttf) format("truetype");
+  font-family: "YgroBook";
+  src: local("YgroBook"),   url(./assets/fonts/YgroSansBeta-Book.otf) format("opentype");
 }
 
 .inktrap {
-  //font-family: WhyteInktrapBold, Helvetica, Arial, sans-serif;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
-  font-weight: 700;
+  font-family: YgroBook, Helvetica, Arial, sans-serif;
 }
 </style>

@@ -3,19 +3,17 @@
     <b-container fluid>
       <b-row>
         <b-col>
-          <h1 class="text-left inktrap display-1 mt-5 ml-3">Hi, I'm Gregor!</h1>
-          <h1 class="text-left inktrap display-5 ml-3">
-            Before I tell you something about me, I'd like to encourage you to leave your own mark on my site.
+          <h1 class="text-left inktrap display-1 mt-5 ml-md-3">Hi, I'm Gregor!</h1>
+          <h1 class="text-left inktrap display-5 ml-md-3">
+            Before I tell you something about <mark>me</mark>, I'd like to encourage you to leave <mark>your own mark</mark> on my site.
+            <b-icon-chevron-double-right class="arrow-right"/>
           </h1>
-          <h1>
-            <!--<b-icon-chevron-double-right/>-->
-            <b-icon-chevron-double-down/>
-          </h1>
+          <h1 class="arrow-down text-left"><b-icon-chevron-double-down/></h1>
           <br>
-          <h5>Just tap on one of the dots...</h5>
         </b-col>
-        <b-col>
-          <div :key="JSON.stringify(dotmatrix)" class="mx-auto" style="width: 360px; height:640px; margin-top: 120px; display:flex; flex-direction:column;justify-content:space-around;">
+        <b-col style="margin-top: 120px;" class="pt-md-5 mx-0 px-0">
+          <h4>Just tap on one of the dots...</h4>
+          <div :key="JSON.stringify(dotmatrix)" class="mx-auto" style="max-width: 360px; height:540px; display:flex; flex-direction:column;justify-content:space-around;">
             <div v-for="(row, key) in dotmatrix" :key="key" class="w-100" style="display:flex; flex-direction:row; justify-content:space-around;">
               <div v-for="(dot) in row" :key="JSON.stringify(dot.coord)" @click="dotClicked(dot)">
                 <div v-if="dot.on" :class="classesForDotOn(dot)" :style="`animation-delay: ${animDelayForDot(dot)}s; color:red`"></div>
@@ -25,6 +23,10 @@
           </div>
         </b-col>
       </b-row>
+      <br>
+      <br>
+      <br>
+      <br>
     </b-container>
   </div>
 </template>
@@ -43,7 +45,7 @@ export default {
     }
   },
   created() {
-    for (var i = 0; i < 18; i++) { //rows
+    for (var i = 0; i < 12; i++) { //rows
       this.dotmatrix.push([]);
       for (var j = 0; j < 8; j++) { //cols
         this.dotmatrix[i].push({coord: {x:j,y:i}, on:false, animColor:''});
@@ -118,6 +120,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  mark {
+    color:  #2c3e50;
+    background-color:rgba(255, 230, 106, 0.5);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    padding: 0px;
+    word-wrap: break-word;
+  }
+
+  .arrow-right {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .arrow-right {
+      display: inline;
+    }
+    .arrow-down {
+      display: none;
+    }
+  }
+
   .dot { 
     border: 3px solid rgba(44, 62, 80, 1);
     border-radius: 50%;
