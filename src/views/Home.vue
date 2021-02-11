@@ -166,12 +166,7 @@ export default {
 <style lang="scss" scoped>
   .marked {
     color:  #2c3e50;
-    /*background-color:rgba(255, 230, 106, 0.5);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;*/
     padding: 0px;
-    //word-wrap: break-word;
-
     background-image: linear-gradient(to right, rgba(255, 230, 106, 0) 50%, rgba(255, 230, 106, 0.5) 50%);
     background-position: 0;
     background-size: 200%;
