@@ -11,7 +11,7 @@
                 <b-icon stacked icon="circle"/>
               </b-iconstack>
             </a>
-            <a href="https://github.com/greglbub/rudiboard" class="text-reset mr-3">
+            <a href="https://github.com/greglbub" class="text-reset mr-3">
               <b-iconstack font-scale="1.5">
                 <b-icon stacked icon="github" scale="0.6"/>
                 <b-icon stacked icon="circle"/>
@@ -25,11 +25,11 @@
             </a>
           </h2>
           <div class="h3 text-left inktrap ml-md-3">
-            I study computer science and I like to think about the interaction between <span class="marked" style="animation-delay: 2s;">people and tech</span> as a <span class="marked" style="animation-delay: 2.5s;">cultural process</span>.
+            I study computer science and I like to think about the interaction between <span class="marked" style="animation-delay: 2.5s;">people and tech</span> as a <span class="marked" style="animation-delay: 3s;">cultural process</span>.
           </div>
           <br>
           <div class="h3 text-left inktrap ml-md-3">
-            As a small example I'd like to encourage you to leave <span class="marked" style="animation-delay: 6s;">your own mark</span> on my site.
+            As a small example I'd like to encourage you to leave <span class="marked" style="animation-delay: 8s;">your own mark</span> on my site.
             <b-icon-chevron-double-right class="arrow-right"/>
           </div>
           <h1 class="arrow-down text-left"><b-icon-chevron-double-down/></h1>
