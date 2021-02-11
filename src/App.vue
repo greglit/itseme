@@ -17,6 +17,18 @@
   color: #2c3e50;
 }
 
+html {
+  font-size: 1rem;
+}
+
+@include media-breakpoint-up(sm) {
+  html {
+    font-size: 1.2rem;
+  }
+}
+
+
+
 @font-face {
   font-family: "YgroBook";
   src: local("YgroBook"),   url(./assets/fonts/YgroSansBeta-Book.otf) format("opentype");
