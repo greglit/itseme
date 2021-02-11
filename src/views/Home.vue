@@ -29,7 +29,7 @@
           </div>
           <br>
           <div class="h3 text-left inktrap ml-md-3">
-            As a small example I'd like to encourage you to leave <span class="marked" style="animation-delay: 8s;">your own mark</span> on my site.
+            As a small example I'd like to encourage you to leave <span class="marked" style="animation-delay: 7s;">your own mark</span> on my site.
             <b-icon-chevron-double-right class="arrow-right"/>
           </div>
           <h1 class="arrow-down text-left"><b-icon-chevron-double-down/></h1>
