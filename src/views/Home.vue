@@ -7,20 +7,20 @@
           <h2 class="text-left ml-md-3 my-4">
             <a href="mailto:gregor.l.wolf@gmail.com" class="text-reset mr-3">
               <b-iconstack font-scale="1.5">
-                <b-icon stacked icon="envelope-fill" scale="0.6"/>
-                <b-icon stacked icon="circle"/>
+                <b-icon-envelope-fill stacked scale="0.6"/>
+                <b-icon-circle stacked/>
               </b-iconstack>
             </a>
             <a href="https://github.com/greglbub" class="text-reset mr-3">
               <b-iconstack font-scale="1.5">
-                <b-icon stacked icon="github" scale="0.6"/>
-                <b-icon stacked icon="circle"/>
+                <b-icon-github stacked scale="0.6"/>
+                <b-icon-circle stacked/>
               </b-iconstack>
             </a>
             <a href="https://www.paypal.com/donate?hosted_button_id=9AJSPC3S83C9W" class="text-reset mr-3">
               <b-iconstack font-scale="1.5" class="mr-2">
-                <b-icon stacked icon="heart-fill" scale="0.55" shift-v="-0.5"/>
-                <b-icon stacked icon="circle"/>
+                <b-icon-heart-fill stacked scale="0.55" shift-v="-0.5"/>
+                <b-icon-circle stacked icon=""/>
               </b-iconstack>
             </a>
           </h2>
@@ -78,22 +78,43 @@ export default {
     }  
   },
   async mounted() {
-    /*var board = new this.$Parse.Object('Dotmatrix', {
-        dots: this.dotmatrix, 
-      });
-      board.save()
-      .then((board) => {
-        console.log('ini dots!');
-      }, (error) => {
-        console.log('ini dots failed');
-      });*/
-    var dotsQuery = new this.$Parse.Query('Dotmatrix');
-    const queryResult = await dotsQuery.find();
-    this.dotsObject = queryResult[0];
-    this.dotmatrix = this.dotsObject.get('dots')
-    this.lastClickedDot = this.dotmatrix[6][4]
+    this.fetchData();
   },
   methods: {
+    async fetchData() {
+      fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
+        headers: {
+          "X-Parse-Application-Id": this.$parseAppId,
+          "X-Parse-Rest-Api-Key": this.$parseAPIKey,
+        }
+      })
+      .then((resp) => resp.json())
+      .then((data) => {
+        //console.log(JSON.stringify(data.dots));
+        this.dotmatrix = data.dots;
+        this.lastClickedDot = this.dotmatrix[6][4];
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    },
+    async saveData() {
+      fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
+        body: `{\"dots\": ${JSON.stringify(this.dotmatrix)} }`,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Parse-Application-Id": this.$parseAppId,
+          "X-Parse-Rest-Api-Key": this.$parseAPIKey,
+        },
+        method: "PUT"
+      })
+      .then((resp) => {
+        //console.log(resp)
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    },
     dotClicked(dot) {
       this.lastClickedDot = dot;
       dot.on = !dot.on;
@@ -105,12 +126,7 @@ export default {
       } else {
         dot.animColor = 'animRed';
       }
-      this.dotsObject.set('dots', this.dotmatrix);
-      this.dotsObject.save().then(() => {
-        console.log(`Dots succesfully saved.`)
-      }, (error) => {
-        alert('Failed to save dots, with error code: ' + error.message);
-      });
+      this.saveData()
     },
     classesForDotOn(dot) {
       return `dot dot-on ${this.shouldAnimate(dot) ? dot.animColor : ''}`;
@@ -184,11 +200,12 @@ export default {
   }
 
   .arrow-right {
-    display: none;
+    display: none !important;
   }
+  
   @media (min-width: 768px) {
     .arrow-right {
-      display: inline;
+      display: inline !important;
     }
     .arrow-down {
       display: none;

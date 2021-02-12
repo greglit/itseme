@@ -1,27 +1,34 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
-import store from './store'
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-//following imports moved to App.vue style section
-//import 'bootstrap/dist/css/bootstrap.css'
-//import 'bootstrap-vue/dist/bootstrap-vue.css'
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+import { 
+  LayoutPlugin,
+} from 'bootstrap-vue'
 
-import Parse from 'parse'
+import { BIcon } from 'bootstrap-vue'
+Vue.component('b-icon', BIcon)
+import { BIconstack } from 'bootstrap-vue'
+Vue.component('b-iconstack', BIconstack)
+import { BIconEnvelopeFill } from 'bootstrap-vue'
+Vue.component('b-icon-envelope-fill', BIconEnvelopeFill)
+import { BIconCircle } from 'bootstrap-vue'
+Vue.component('b-icon-circle', BIconCircle)
+import { BIconGithub } from 'bootstrap-vue'
+Vue.component('b-icon-github', BIconGithub)
+import { BIconHeartFill } from 'bootstrap-vue'
+Vue.component('b-icon-heart-fill', BIconHeartFill)
+import { BIconChevronDoubleRight } from 'bootstrap-vue'
+Vue.component('b-icon-chevron-double-right', BIconChevronDoubleRight)
+import { BIconChevronDoubleDown } from 'bootstrap-vue'
+Vue.component('b-icon-chevron-double-down', BIconChevronDoubleDown)
+
+Vue.use(LayoutPlugin)
+
 Vue.prototype.$parseAppId = 'jnJ1v8blNVzH58Um0ifHpO1NquRsQ2nne5ZYJjZM';
-Vue.prototype.$parseJsKey = '87uBadGLwY3klaO8mt0PhBOiSP9QLg0GGRgOEQoY';
-Vue.prototype.$parseServerURL = 'parseapi.back4app.com';
-Parse.initialize(Vue.prototype.$parseAppId, Vue.prototype.$parseJsKey);
-Parse.serverURL = 'https://' + Vue.prototype.$parseServerURL
-Vue.prototype.$Parse = Parse 
+Vue.prototype.$parseAPIKey = 'iQQHiG5864NCtiwQoTET4wRRqm4hj2Wnse8NoqCp';
 
 Vue.config.productionTip = false
 
 new Vue({
-  router,
-  store,
   render: h => h(App)
 }).$mount('#app')

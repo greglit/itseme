@@ -1,8 +1,18 @@
 <template>
   <div id="app">
-    <router-view/>
+    <home/>
   </div>
 </template>
+
+<script>
+import Home from './views/Home.vue'
+
+export default {
+  components: {
+    Home,
+  }
+}
+</script>
 
 <style lang="scss">
 //@import './assets/styles/custom.scss';
