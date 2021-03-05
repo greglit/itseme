@@ -7,29 +7,29 @@
           <h2 class="text-left ml-md-3 my-4">
             <a href="mailto:gregor.l.wolf@gmail.com" class="text-reset mr-3">
               <b-iconstack font-scale="1.5">
-                <b-icon-envelope-fill stacked scale="0.6"/>
-                <b-icon-circle stacked/>
+                <b-icon stacked icon="envelope-fill" scale="0.6"/>
+                <b-icon stacked icon="circle"/>
               </b-iconstack>
             </a>
-            <a href="https://github.com/greglbub" class="text-reset mr-3">
+            <a href="https://github.com/greglit" class="text-reset mr-3">
               <b-iconstack font-scale="1.5">
-                <b-icon-github stacked scale="0.6"/>
-                <b-icon-circle stacked/>
+                <b-icon stacked icon="github" scale="0.6"/>
+                <b-icon stacked icon="circle"/>
               </b-iconstack>
             </a>
             <a href="https://www.paypal.com/donate?hosted_button_id=9AJSPC3S83C9W" class="text-reset mr-3">
               <b-iconstack font-scale="1.5" class="mr-2">
-                <b-icon-heart-fill stacked scale="0.55" shift-v="-0.5"/>
-                <b-icon-circle stacked icon=""/>
+                <b-icon stacked icon="heart-fill" scale="0.55" shift-v="-0.5"/>
+                <b-icon stacked icon="circle"/>
               </b-iconstack>
             </a>
           </h2>
           <div class="h3 text-left inktrap ml-md-3">
-            I study computer science and I like to think about the interaction between <span class="marked" style="animation-delay: 2.5s;">people and tech</span> as a <span class="marked" style="animation-delay: 3s;">cultural process</span>.
+            I study computer science and I like to think about the interaction between <span class="marked" style="animation-delay: 2s;">people and tech</span> as a <span class="marked" style="animation-delay: 2.5s;">cultural process</span>.
           </div>
           <br>
           <div class="h3 text-left inktrap ml-md-3">
-            As a small example I'd like to encourage you to leave <span class="marked" style="animation-delay: 7s;">your own mark</span> on my site.
+            As a small example I'd like to encourage you to leave <span class="marked" style="animation-delay: 6s;">your own mark</span> on my site.
             <b-icon-chevron-double-right class="arrow-right"/>
           </div>
           <h1 class="arrow-down text-left"><b-icon-chevron-double-down/></h1>
@@ -78,43 +78,22 @@ export default {
     }  
   },
   async mounted() {
-    this.fetchData();
+    /*var board = new this.$Parse.Object('Dotmatrix', {
+        dots: this.dotmatrix, 
+      });
+      board.save()
+      .then((board) => {
+        console.log('ini dots!');
+      }, (error) => {
+        console.log('ini dots failed');
+      });*/
+    var dotsQuery = new this.$Parse.Query('Dotmatrix');
+    const queryResult = await dotsQuery.find();
+    this.dotsObject = queryResult[0];
+    this.dotmatrix = this.dotsObject.get('dots')
+    this.lastClickedDot = this.dotmatrix[6][4]
   },
   methods: {
-    async fetchData() {
-      fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
-        headers: {
-          "X-Parse-Application-Id": this.$parseAppId,
-          "X-Parse-Rest-Api-Key": this.$parseAPIKey,
-        }
-      })
-      .then((resp) => resp.json())
-      .then((data) => {
-        //console.log(JSON.stringify(data.dots));
-        this.dotmatrix = data.dots;
-        this.lastClickedDot = this.dotmatrix[6][4];
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    },
-    async saveData() {
-      fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
-        body: `{\"dots\": ${JSON.stringify(this.dotmatrix)} }`,
-        headers: {
-          "Content-Type": "application/json",
-          "X-Parse-Application-Id": this.$parseAppId,
-          "X-Parse-Rest-Api-Key": this.$parseAPIKey,
-        },
-        method: "PUT"
-      })
-      .then((resp) => {
-        //console.log(resp)
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    },
     dotClicked(dot) {
       this.lastClickedDot = dot;
       dot.on = !dot.on;
@@ -126,7 +105,12 @@ export default {
       } else {
         dot.animColor = 'animRed';
       }
-      this.saveData()
+      this.dotsObject.set('dots', this.dotmatrix);
+      this.dotsObject.save().then(() => {
+        console.log(`Dots succesfully saved.`)
+      }, (error) => {
+        alert('Failed to save dots, with error code: ' + error.message);
+      });
     },
     classesForDotOn(dot) {
       return `dot dot-on ${this.shouldAnimate(dot) ? dot.animColor : ''}`;
@@ -162,7 +146,7 @@ export default {
       }   
       const distance = Math.abs(dot.coord.x - this.lastClickedDot.coord.x) + Math.abs(dot.coord.y - this.lastClickedDot.coord.y);
       if (countDotsOn > 3) {
-        return dot.coord.x % 4 == 0 && dot.coord.y % 4 == 0 && distance < 8
+        return dot.coord.x % 4 == 0 && dot.coord.y % 4 == 0 && distance < 5
       } else {
         return distance < 8
       }
@@ -182,7 +166,12 @@ export default {
 <style lang="scss" scoped>
   .marked {
     color:  #2c3e50;
+    /*background-color:rgba(255, 230, 106, 0.5);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;*/
     padding: 0px;
+    //word-wrap: break-word;
+
     background-image: linear-gradient(to right, rgba(255, 230, 106, 0) 50%, rgba(255, 230, 106, 0.5) 50%);
     background-position: 0;
     background-size: 200%;
@@ -200,12 +189,11 @@ export default {
   }
 
   .arrow-right {
-    display: none !important;
+    display: none;
   }
-  
   @media (min-width: 768px) {
     .arrow-right {
-      display: inline !important;
+      display: inline;
     }
     .arrow-down {
       display: none;
