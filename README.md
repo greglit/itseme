@@ -1,4 +1,5 @@
-# itseme
+# My Personal Website
+A fun little project to explore the interaction between people and tech as a cultural process.
 
 ## Project setup
 ```
