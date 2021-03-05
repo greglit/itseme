@@ -11,7 +11,7 @@
                 <b-icon stacked icon="circle"/>
               </b-iconstack>
             </a>
-            <a href="https://github.com/greglbub/rudiboard" class="text-reset mr-3">
+            <a href="https://github.com/greglit" class="text-reset mr-3">
               <b-iconstack font-scale="1.5">
                 <b-icon stacked icon="github" scale="0.6"/>
                 <b-icon stacked icon="circle"/>
@@ -146,7 +146,7 @@ export default {
       }   
       const distance = Math.abs(dot.coord.x - this.lastClickedDot.coord.x) + Math.abs(dot.coord.y - this.lastClickedDot.coord.y);
       if (countDotsOn > 3) {
-        return dot.coord.x % 4 == 0 && dot.coord.y % 4 == 0 && distance < 8
+        return dot.coord.x % 4 == 0 && dot.coord.y % 4 == 0 && distance < 5
       } else {
         return distance < 8
       }
