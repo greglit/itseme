@@ -3,7 +3,11 @@ import App from './App.vue'
 
 import { 
   LayoutPlugin,
+  CardPlugin,
 } from 'bootstrap-vue'
+
+Vue.use(LayoutPlugin)
+Vue.use(CardPlugin)
 
 import { BIcon } from 'bootstrap-vue'
 Vue.component('b-icon', BIcon)
@@ -21,8 +25,6 @@ import { BIconChevronDoubleRight } from 'bootstrap-vue'
 Vue.component('b-icon-chevron-double-right', BIconChevronDoubleRight)
 import { BIconChevronDoubleDown } from 'bootstrap-vue'
 Vue.component('b-icon-chevron-double-down', BIconChevronDoubleDown)
-
-Vue.use(LayoutPlugin)
 
 Vue.prototype.$parseAppId = 'jnJ1v8blNVzH58Um0ifHpO1NquRsQ2nne5ZYJjZM';
 Vue.prototype.$parseAPIKey = 'iQQHiG5864NCtiwQoTET4wRRqm4hj2Wnse8NoqCp';

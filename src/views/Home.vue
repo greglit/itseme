@@ -1,10 +1,11 @@
 <template>
-  <div class="home">
+  <div>
+    <div class="pb-5 header">
     <b-container fluid>
       <b-row>
         <b-col>
-          <h1 class="text-left inktrap display-3 mt-4 mt-md-5 ml-md-3">Hi, I'm Gregor!</h1>
-          <h2 class="text-left ml-md-3 my-4">
+          <h1 class="text-left inktrap display-3 mt-4 mt-md-5 ml-md-4">Hi, I'm Gregor!</h1>
+          <h2 class="text-left ml-md-4 my-4">
             <a href="mailto:hi@gregl.it" class="text-reset mr-3">
               <b-iconstack font-scale="1.5">
                 <b-icon-envelope-fill stacked scale="0.6"/>
@@ -24,11 +25,11 @@
               </b-iconstack>
             </a>
           </h2>
-          <div class="h3 text-left inktrap ml-md-3">
+          <div class="h3 text-left inktrap ml-md-4">
             I study computer science and I like to think about the interaction between <span class="marked" style="animation-delay: 2.5s;">people and tech</span> as a <span class="marked" style="animation-delay: 3s;">cultural process</span>.
           </div>
           <br>
-          <div class="h3 text-left inktrap ml-md-3">
+          <div class="h3 text-left inktrap ml-md-4">
             As a small example I'd like to encourage you to leave <span class="marked" style="animation-delay: 7s;">your own mark</span> on my site.
             <b-icon-chevron-double-right class="arrow-right"/>
           </div>
@@ -48,15 +49,20 @@
         </b-col>
       </b-row>
     </b-container>
+    </div>
     <br>
+    <br>
+    <projects-list/>
   </div>
 </template>
 
 <script>
+import ProjectsList from '../components/ProjectsList.vue';
 
 export default {
   name: 'Home',
   components: {
+    ProjectsList
 
   },
   data(){
@@ -202,7 +208,7 @@ export default {
   .arrow-right {
     display: none !important;
   }
-  
+
   @media (min-width: 768px) {
     .arrow-right {
       display: inline !important;
@@ -210,6 +216,10 @@ export default {
     .arrow-down {
       display: none;
     }
+  }
+
+  .header{
+    background-color: white;
   }
 
   .dot { 

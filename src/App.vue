@@ -27,6 +27,10 @@ export default {
   color: #2c3e50;
 }
 
+html,body {
+  background-color: whitesmoke;
+}
+
 html {
   font-size: 1rem;
 }
