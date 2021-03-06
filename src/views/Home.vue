@@ -69,7 +69,7 @@ export default {
     return {
       dotsObject: undefined,
       dotmatrix: [],
-      lastClickedDot: {},
+      lastClickedDot: {coord: {x:4,y:6}, on:false, animColor:''},
       marked: true,
     }
   },
@@ -98,7 +98,7 @@ export default {
       .then((data) => {
         //console.log(JSON.stringify(data.dots));
         this.dotmatrix = data.dots;
-        this.lastClickedDot = this.dotmatrix[6][4];
+        this.lastClickedDot = data.lastClickedDot;
       })
       .catch(function(error) {
         console.log(error);
@@ -106,7 +106,7 @@ export default {
     },
     async saveData() {
       fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
-        body: `{\"dots\": ${JSON.stringify(this.dotmatrix)} }`,
+        body: `{\"dots\": ${JSON.stringify(this.dotmatrix)}, \"lastClickedDot\": ${JSON.stringify(this.lastClickedDot)} }`,
         headers: {
           "Content-Type": "application/json",
           "X-Parse-Application-Id": this.$parseAppId,
@@ -243,17 +243,17 @@ export default {
   }
 
   .animYellow {
-    animation: pulseYellow 4s ease;
+    animation: pulseYellow 2.5s forwards; //ease;
     will-change: box-shadow;
   }
 
   .animBlue {
-    animation: pulseBlue 4s ease;
+    animation: pulseBlue 2.5s forwards; //ease;
     will-change: box-shadow;
   }
 
   .animRed {
-    animation: pulseRed 4s ease;
+    animation: pulseRed 2.5s forwards; //ease;
     will-change: box-shadow;
   }
 
@@ -262,11 +262,8 @@ export default {
       //transform: scale(1.0);
       box-shadow: 0 0 0 0 rgba(255, 255, 0, 0.2);
     }
-    70% {
-      box-shadow: 0 0 0 1000px rgba(255, 255, 0, 0);
-    }
     100% {
-      box-shadow: 0 0 0 0 rgba(255, 255, 0, 0);
+      box-shadow: 0 0 0 500px rgba(255, 255, 0, 0.04);
     }
   }
   @keyframes pulseBlue {
@@ -274,11 +271,8 @@ export default {
       //transform: scale(1.0);
       box-shadow: 0 0 0 0 rgba(0, 0, 255, 0.2);
     }
-    70% {
-      box-shadow: 0 0 0 1000px rgba(0, 0, 255, 0);
-    }
     100% {
-      box-shadow: 0 0 0 0 rgba(0, 0, 255, 0);
+      box-shadow: 0 0 0 500px rgba(0, 0, 255, 0.04);
     }
   }
   @keyframes pulseRed {
@@ -286,13 +280,9 @@ export default {
       //transform: scale(1.0);
       box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.2);
     }
-    70% {
-      //transform: scale(1.0);
-      box-shadow: 0 0 0 1000px rgba(255, 0, 0, 0);
-    }
     100% {
       //transform: scale(1.0);
-      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+      box-shadow: 0 0 0 500px rgba(255, 0, 0, 0.04);
     }
   }
 </style>
