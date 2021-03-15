@@ -9,8 +9,7 @@
         </b-col>
         <b-col md="8">
           <b-card-body :title="project.name">
-            <b-card-text>
-              {{project.desc}}
+            <b-card-text v-html="project.desc">
             </b-card-text>
             <a v-if="project.URL != ''" :href="project.URL">Have a look <b-icon-chevron-double-right/></a>
           </b-card-body>

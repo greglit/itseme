@@ -24,6 +24,12 @@ export default {
     return {
       projects : [
         { 
+          name: 'Policy Bear', 
+          desc: 'Contribution to the <a href="https://hackthearctic.com/">Hack The Arctic Hackathon</a> together with <a href="https://github.com/RSciFi">Friedrich Röseler</a>: We developed a prototype for a web interface to generate short and relatable sentences in a beautiful layout from arctic climate data sets to use them in the next conference or meeting.',
+          img: require('@/assets/img/policybear.png'),
+          URL: 'https://policybear.gregl.it/'
+        },
+        { 
           name: 'Rudiboard', 
           desc: 'Modern Vue.js web app with real time database connection: Track games and scores and plan tournaments at the office, in your shared flat or your favorite bar.',
           img: require('@/assets/img/rudiboard.png'),
