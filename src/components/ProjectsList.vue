@@ -25,7 +25,7 @@ export default {
       projects : [
         { 
           name: 'Policy Bear', 
-          desc: 'Contribution to the <a href="https://hackthearctic.com/">Hack The Arctic Hackathon</a> together with <a href="https://github.com/RSciFi">Friedrich Röseler</a>: We developed a prototype for a web interface to generate short and relatable sentences in a beautiful layout from arctic climate data sets to use them in the next conference or meeting.',
+          desc: 'Contribution to the <a href="https://hackthearctic.com/">Hack The Arctic Hackathon</a> together with <a href="https://github.com/geograFie">Friedrich Röseler</a>: We developed a prototype for a web interface to generate short and relatable sentences in a beautiful layout from arctic climate data sets to use them in the next conference or meeting.',
           img: require('@/assets/img/policybear.png'),
           URL: 'https://policybear.gregl.it/'
         },
