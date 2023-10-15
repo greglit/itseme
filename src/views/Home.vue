@@ -50,9 +50,15 @@
       </b-row>
     </b-container>
     </div>
-    <br>
-    <br>
+    <br/>
+    <br/>
     <projects-list/>
+    <br/>
+    <router-link to="/impressum">
+      Impressum
+    </router-link>
+    <br/>
+    <br/>
   </div>
 </template>
 
