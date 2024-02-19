@@ -38,8 +38,8 @@
         </b-col>
         <b-col style="margin-top: 120px;" class="pt-md-4 pb-5 pb-md-1 mx-0 px-0">
           <h5 style="max-width: 360px;" class="mx-auto">Just tap on one of the dots to change them for everyone.</h5>
-          <div :key="JSON.stringify(dotmatrix)" class="mx-auto" style="max-width: 360px; height:540px; display:flex; flex-direction:column;justify-content:space-around;">
-            <div v-for="(row, key) in dotmatrix" :key="key" class="w-100" style="display:flex; flex-direction:row; justify-content:space-around;">
+          <div :key="JSON.stringify(localDots)" class="mx-auto" style="max-width: 360px; height:540px; display:flex; flex-direction:column;justify-content:space-around;">
+            <div v-for="(row, key) in localDots" :key="key" class="w-100" style="display:flex; flex-direction:row; justify-content:space-around;">
               <div v-for="(dot) in row" :key="JSON.stringify(dot.coord)" @click="dotClicked(dot)">
                 <div v-if="dot.on" :class="classesForDotOn(dot)" :style="`animation-delay: ${animDelayForDot(dot)}s; color:red`"></div>
                 <div v-else class="dot"></div>
@@ -73,28 +73,29 @@ export default {
   },
   data(){
     return {
-      dotsObject: undefined,
-      dotmatrix: [],
+      fetchedDots: [],
+      localDots: [],
       lastClickedDot: {coord: {x:4,y:6}, on:false, animColor:''},
       marked: true,
     }
   },
   created() {
-    if (this.dotsObject == undefined) {
+    if (true) {
       for (var i = 0; i < 12; i++) { //rows
-        this.dotmatrix.push([]);
+        this.localDots.push([]);
         for (var j = 0; j < 8; j++) { //cols
-          this.dotmatrix[i].push({coord: {x:j,y:i}, on:false, animColor:''});
+          this.localDots[i].push({coord: {x:j,y:i}, on:false, animColor:''});
         }
       }
     }  
   },
   async mounted() {
-    this.fetchData();
+    await this.fetchData();
+    this.localDots = this.createDotsWithAnimInfo(this.fetchedDots, this.lastClickedDot)
   },
   methods: {
     async fetchData() {
-      fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
+      await fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
         headers: {
           "X-Parse-Application-Id": this.$parseAppId,
           "X-Parse-Rest-Api-Key": this.$parseAPIKey,
@@ -103,8 +104,9 @@ export default {
       .then((resp) => resp.json())
       .then((data) => {
         //console.log(JSON.stringify(data.dots));
-        this.dotmatrix = data.dots;
+        this.fetchedDots = data.dots;
         this.lastClickedDot = data.lastClickedDot;
+        console.log("fetched dots set")
       })
       .catch(function(error) {
         console.log(error);
@@ -112,7 +114,7 @@ export default {
     },
     async saveData() {
       fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
-        body: `{\"dots\": ${JSON.stringify(this.dotmatrix)}, \"lastClickedDot\": ${JSON.stringify(this.lastClickedDot)} }`,
+        body: `{\"dots\": ${JSON.stringify(this.fetchedDots)}, \"lastClickedDot\": ${JSON.stringify(this.lastClickedDot)} }`,
         headers: {
           "Content-Type": "application/json",
           "X-Parse-Application-Id": this.$parseAppId,
@@ -138,39 +140,43 @@ export default {
       } else {
         dot.animColor = 'animRed';
       }
-      this.saveData()
+      //this.saveData()
+    },
+    createDotsWithAnimInfo(dots, lastClickedDot) {
+      console.log("createDotsWithAnimInfo")
+      return dots
     },
     classesForDotOn(dot) {
       return `dot dot-on ${this.shouldAnimate(dot) ? dot.animColor : ''}`;
     },
     shouldAnimate(dot) {
       //console.log(JSON.stringify(dot.coord));
-      //console.log(JSON.stringify(this.dotmatrix[dot.coord.y][dot.coord.x]));
+      //console.log(JSON.stringify(this.fetchedDots[dot.coord.y][dot.coord.x]));
 
       let countDotsOn = 0;
       if (dot.coord.y > 0) {
-        countDotsOn += Number(this.dotmatrix[dot.coord.y-1][dot.coord.x].on); //upmid
+        countDotsOn += Number(this.fetchedDots[dot.coord.y-1][dot.coord.x].on); //upmid
         if (dot.coord.x > 0) {
-          countDotsOn += Number(this.dotmatrix[dot.coord.y-1][dot.coord.x-1].on); //upleft
+          countDotsOn += Number(this.fetchedDots[dot.coord.y-1][dot.coord.x-1].on); //upleft
         }
-        if (dot.coord.x < this.dotmatrix[0].length-1) {
-          countDotsOn += Number(this.dotmatrix[dot.coord.y-1][dot.coord.x+1].on); //upright
+        if (dot.coord.x < this.fetchedDots[0].length-1) {
+          countDotsOn += Number(this.fetchedDots[dot.coord.y-1][dot.coord.x+1].on); //upright
         }
       }
-      if (dot.coord.y < this.dotmatrix.length-1) {
-        countDotsOn += Number(this.dotmatrix[dot.coord.y+1][dot.coord.x].on); //downmid
+      if (dot.coord.y < this.fetchedDots.length-1) {
+        countDotsOn += Number(this.fetchedDots[dot.coord.y+1][dot.coord.x].on); //downmid
         if (dot.coord.x > 0) {
-          countDotsOn += Number(this.dotmatrix[dot.coord.y+1][dot.coord.x-1].on); //downleft
+          countDotsOn += Number(this.fetchedDots[dot.coord.y+1][dot.coord.x-1].on); //downleft
         }
-        if (dot.coord.x < this.dotmatrix[0].length-1) {
-          countDotsOn += Number(this.dotmatrix[dot.coord.y+1][dot.coord.x+1].on); //downright
+        if (dot.coord.x < this.fetchedDots[0].length-1) {
+          countDotsOn += Number(this.fetchedDots[dot.coord.y+1][dot.coord.x+1].on); //downright
         }
       }
       if (dot.coord.x > 0) {
-        countDotsOn += Number(this.dotmatrix[dot.coord.y][dot.coord.x-1].on); //midleft
+        countDotsOn += Number(this.fetchedDots[dot.coord.y][dot.coord.x-1].on); //midleft
       }
-      if (dot.coord.x < this.dotmatrix[0].length-1) {
-        countDotsOn += Number(this.dotmatrix[dot.coord.y][dot.coord.x+1].on); //midright
+      if (dot.coord.x < this.fetchedDots[0].length-1) {
+        countDotsOn += Number(this.fetchedDots[dot.coord.y][dot.coord.x+1].on); //midright
       }   
       const distance = Math.abs(dot.coord.x - this.lastClickedDot.coord.x) + Math.abs(dot.coord.y - this.lastClickedDot.coord.y);
       if (countDotsOn > 3) {
