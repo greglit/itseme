@@ -38,8 +38,8 @@
         </b-col>
         <b-col style="margin-top: 120px;" class="pt-md-4 pb-5 pb-md-1 mx-0 px-0">
           <h5 style="max-width: 360px;" class="mx-auto">Just tap on one of the dots to change them for everyone.</h5>
-          <div :key="JSON.stringify(localDots)" class="mx-auto" style="max-width: 360px; height:540px; display:flex; flex-direction:column;justify-content:space-around;">
-            <div v-for="(row, key) in localDots" :key="key" class="w-100" style="display:flex; flex-direction:row; justify-content:space-around;">
+          <div :key="JSON.stringify(fetchedDots)" class="mx-auto" style="max-width: 360px; height:540px; display:flex; flex-direction:column;justify-content:space-around;">
+            <div v-for="(row, key) in fetchedDots" :key="key" class="w-100" style="display:flex; flex-direction:row; justify-content:space-around;">
               <div v-for="(dot) in row" :key="JSON.stringify(dot.coord)" @click="dotClicked(dot)">
                 <div v-if="dot.on" :class="classesForDotOn(dot)" :style="`animation-delay: ${animDelayForDot(dot)}s; color:red`"></div>
                 <div v-else class="dot"></div>
@@ -65,6 +65,8 @@
 <script>
 import ProjectsList from '../components/ProjectsList.vue';
 
+const ANIM_AMOUNT = 5
+
 export default {
   name: 'Home',
   components: {
@@ -74,7 +76,7 @@ export default {
   data(){
     return {
       fetchedDots: [],
-      localDots: [],
+      animDots: [],
       lastClickedDot: {coord: {x:4,y:6}, on:false, animColor:''},
       marked: true,
     }
@@ -82,16 +84,17 @@ export default {
   created() {
     if (true) {
       for (var i = 0; i < 12; i++) { //rows
-        this.localDots.push([]);
+        this.fetchedDots.push([]);
         for (var j = 0; j < 8; j++) { //cols
-          this.localDots[i].push({coord: {x:j,y:i}, on:false, animColor:''});
+          this.fetchedDots[i].push({coord: {x:j,y:i}, on:false, animColor:''});
         }
       }
     }  
   },
   async mounted() {
-    await this.fetchData();
-    this.localDots = this.createDotsWithAnimInfo(this.fetchedDots, this.lastClickedDot)
+    //await this.fetchData();
+    this.prepareDotsForAnimation(this.fetchedDots, this.lastClickedDot)
+    //this.fetchedDots = this.fetchedDots
   },
   methods: {
     async fetchData() {
@@ -106,7 +109,6 @@ export default {
         //console.log(JSON.stringify(data.dots));
         this.fetchedDots = data.dots;
         this.lastClickedDot = data.lastClickedDot;
-        console.log("fetched dots set")
       })
       .catch(function(error) {
         console.log(error);
@@ -131,6 +133,7 @@ export default {
     },
     dotClicked(dot) {
       this.lastClickedDot = dot;
+      this.prepareDotsForAnimation(this.fetchedDots, this.lastClickedDot)
       dot.on = !dot.on;
       var rd = this.randNum(1,3);
       if (rd == 1) {
@@ -140,11 +143,67 @@ export default {
       } else {
         dot.animColor = 'animRed';
       }
-      //this.saveData()
+      this.saveData()
     },
-    createDotsWithAnimInfo(dots, lastClickedDot) {
-      console.log("createDotsWithAnimInfo")
-      return dots
+    prepareDotsForAnimation(dots, lastClickedDot) {
+      let pos = lastClickedDot.coord
+      this.animDots = this.findNearestActivatedNeighbours(dots, pos, ANIM_AMOUNT)
+      this.animDots.push(lastClickedDot)
+    },
+    findNearestActivatedNeighbours(dots, pos, amount) {
+      console.log("findNearestActivatedNeighbours for " + JSON.stringify(pos))
+      let neighbours = []
+      let currRadius = 1
+      while(neighbours.length < amount && currRadius < 12) {
+        //set position to upright of the position
+        pos.x--
+        pos.y--
+        console.log("curr position" + JSON.stringify(pos))
+        //check current dot for activation and go right until upright corner is reached
+        for (let i = 0; i < currRadius*2; i++) {
+          try {
+            if (dots[pos.x][pos.y].on) {
+            neighbours.push(dots[pos.x][pos.y])
+            }
+          } catch (e) {}
+          pos.x++
+          console.log("curr position" + JSON.stringify(pos))
+        }
+        //check current dot for activation and go down until downright corner is reached
+        for (let i = 0; i < currRadius*2; i++) {
+          try {
+            if (dots[pos.x][pos.y].on) {
+              neighbours.push(dots[pos.x][pos.y])
+            }
+          } catch (e) {}
+          pos.y++
+          console.log("curr position" + JSON.stringify(pos))
+        }
+        //check current dot for activation and go left until downleft corner is reached
+        for (let i = 0; i < currRadius*2; i++) {
+          try {
+            if (dots[pos.x][pos.y].on) {
+              neighbours.push(dots[pos.x][pos.y])
+            }
+          } catch (e) {}
+          pos.x--
+          console.log("curr position" + JSON.stringify(pos))
+        }
+        //check current dot for activation and go up until upright corner is reached
+        for (let i = 0; i < currRadius*2; i++) {
+          try {
+            if (dots[pos.x][pos.y].on) {
+              neighbours.push(dots[pos.x][pos.y])
+            }
+          } catch (e) {}
+          pos.y--
+          console.log("curr position" + JSON.stringify(pos))
+        }
+
+        //increase radius and move position to the new upright corner of this radius
+        currRadius++
+      }
+      return neighbours
     },
     classesForDotOn(dot) {
       return `dot dot-on ${this.shouldAnimate(dot) ? dot.animColor : ''}`;
@@ -152,7 +211,14 @@ export default {
     shouldAnimate(dot) {
       //console.log(JSON.stringify(dot.coord));
       //console.log(JSON.stringify(this.fetchedDots[dot.coord.y][dot.coord.x]));
-
+      for(let animDot of this.animDots) {
+        if(animDot.coord.x == dot.coord.x && animDot.coord.y == dot.coord.y) {
+          console.log("should animate! "+ JSON.stringify(dot))
+          return true
+        }
+      }
+      return false;
+/*
       let countDotsOn = 0;
       if (dot.coord.y > 0) {
         countDotsOn += Number(this.fetchedDots[dot.coord.y-1][dot.coord.x].on); //upmid
@@ -183,12 +249,12 @@ export default {
         return dot.coord.x % 4 == 0 && dot.coord.y % 4 == 0 && distance < 5
       } else {
         return distance < 5
-      }
+      }*/
     },
     animDelayForDot(dot) {
       const xDiff = Math.abs(dot.coord.x - this.lastClickedDot.coord.x);
       const yDiff = Math.abs(dot.coord.y - this.lastClickedDot.coord.y);
-      return (xDiff + yDiff) * 0.05
+      return (Math.sqrt(xDiff**2 + yDiff**2)) * 0.05
     },
     randNum(min, max) {
       return Math.floor(Math.random() * (max+1 - min) + min);
