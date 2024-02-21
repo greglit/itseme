@@ -66,6 +66,9 @@
 import ProjectsList from '../components/ProjectsList.vue';
 
 const ANIM_AMOUNT = 5
+const DOTMATRIX_OBJECTID = "Zsbwj1TfUX" //TEST
+//const DOTMATRIX_OBJECTID = "FCQLTd2Xdz" //DEPLOY
+const DOTMATRIX_URL = `https://parseapi.back4app.com/classes/Dotmatrix/${DOTMATRIX_OBJECTID}`
 
 export default {
   name: 'Home',
@@ -92,13 +95,13 @@ export default {
     }  
   },
   async mounted() {
-    //await this.fetchData();
+    await this.fetchData();
     this.prepareDotsForAnimation(this.fetchedDots, this.lastClickedDot)
     //this.fetchedDots = this.fetchedDots
   },
   methods: {
     async fetchData() {
-      await fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
+      await fetch(DOTMATRIX_URL, {
         headers: {
           "X-Parse-Application-Id": this.$parseAppId,
           "X-Parse-Rest-Api-Key": this.$parseAPIKey,
@@ -115,7 +118,7 @@ export default {
       });
     },
     async saveData() {
-      fetch("https://parseapi.back4app.com/classes/Dotmatrix/FCQLTd2Xdz", {
+      fetch(DOTMATRIX_URL, {
         body: `{\"dots\": ${JSON.stringify(this.fetchedDots)}, \"lastClickedDot\": ${JSON.stringify(this.lastClickedDot)} }`,
         headers: {
           "Content-Type": "application/json",
